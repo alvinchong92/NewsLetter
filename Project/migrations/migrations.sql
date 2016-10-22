@@ -1,0 +1,9 @@
+DROP DATABASE IF EXISTS posts
+CREATE DATABASE post;
+
+\c post
+
+CREATE TABLE posts (
+  id SERIAL PRIMARY KEY,
+  body VARCHAR NOT NULL
+  );

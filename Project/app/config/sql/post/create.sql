@@ -1,1 +1,1 @@
-INSERT INTO posts (body) VALUES ($1) RETURNING *;
+INSERT INTO posts (body, user_id) VALUES ($1, $2) RETURNING *;

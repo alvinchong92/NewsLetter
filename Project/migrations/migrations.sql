@@ -1,9 +1,16 @@
-DROP DATABASE IF EXISTS posts
+DROP DATABASE IF EXISTS post
 CREATE DATABASE post;
 
 \c post
 
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR NOT NULL,
+  password VARCHAR NOT NULL
+  );
+
 CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
-  body VARCHAR NOT NULL
+  body VARCHAR NOT NULL,
+  user_id INTEGER REFERENCES users (id)
   );

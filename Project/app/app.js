@@ -2,7 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+const authRouter = require('./routes/authRouter');
+const userRouter = require('./routes/userRouter');
 const postRouter = require('./routes/postRouter');
+const authentication = require('./middleware/authentication');
 const session = require('express-session');
 
 const app = express();
@@ -20,12 +23,10 @@ app.use(session({
 
 app.use(morgan('dev'));
 
-app.use((req, res, next) => {
-  console.log('SOMEONE HIT A ROUTE!!!');
-  next();
-});
-
-
+app.use('/api', authentication);
+app.use('/api', authRouter);
+app.use('/api/users', userRouter);
 app.use('/api/posts', postRouter);
+
 
 module.exports = app;

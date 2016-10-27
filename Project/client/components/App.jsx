@@ -6,6 +6,7 @@
  import PostForm from './posts/PostForm.jsx';
 
 
+
  const propTypes = {};
 
  class App extends React.Component {
@@ -50,7 +51,6 @@
             });
    }
    sendPost({ body }) {
-    console.log(this.state)
      request.post('/api/posts')
            .send({ body })
            .then(() => {

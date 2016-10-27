@@ -29,6 +29,9 @@ export default class PostForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.sendPost(this.state)
+    this.setState({
+      body: ''
+    })
   }
 
 

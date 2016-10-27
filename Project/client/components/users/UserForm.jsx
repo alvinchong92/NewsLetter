@@ -26,7 +26,7 @@ import React from 'react';
    }
    render() {
      return (
-       <div>
+       <div id="UserForm">
          <form onSubmit={this.handleSubmit}>
            <input
              type="text"

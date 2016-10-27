@@ -17,7 +17,7 @@ export default class Toggle extends React.Component {
   render() {
     return(
       <div>
-        <button onClick= {this.handleClick}> {this.state.isToggledOn ? 'ON 🔥' : '💩'} </button>
+        <button id="fireButton" onClick= {this.handleClick}> {this.state.isToggledOn ? 'ON 🔥' : '💩'} </button>
         {console.log(this.state.isToggledOn)}
       </div>
     )

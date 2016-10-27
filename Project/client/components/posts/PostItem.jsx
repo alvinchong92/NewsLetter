@@ -1,4 +1,5 @@
 import React from 'react';
+import Count from '../buttons/Count.jsx';
 
 export default class PostItem extends React.Component {
   constructor(props) {
@@ -13,14 +14,11 @@ export default class PostItem extends React.Component {
 
 
   handleDeleteClick() {
-    console.log(this.props)
     this.props.deletePost(this.props.id);
   }
 
   handleEditofContent(e) {
     let newContent = prompt('Update');
-    console.log("hit");
-    console.log(this.props)
     this.props.handlePublish({
       id: this.props.id,
       body: newContent,
@@ -33,12 +31,13 @@ export default class PostItem extends React.Component {
     // } else {
     //   return (<a onClick= {this.handleClick}> press me </a> )
     // }
+    // <button className="button" onClick={this.handleEditofContent}> New shit </button>
     const body = this.props.body;
     return(
       <div>
           <div className="post_display"> {body}
           <button className="button" onClick={this.handleDeleteClick}> Delete </button>
-          <button className="button" onClick={this.handleEditofContent}> New shit </button>
+          <Count />
         </div>
       </div>
     )

@@ -6,6 +6,18 @@ body {
   background-image: url("https://unsplash.com/photos/He8-FZl-o10")
 }
 
+#UserForm {
+  position: relative;
+  left: 50%;
+  top: 50%;
+
+}
+
+#fireButton {
+  position: relative;
+  left: 1rem;
+}
+
 
 #title_display {
   position: relative;
@@ -15,13 +27,23 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-style: bold;
 }
+* + * {
+  margin-top: 1rem;
+}
+
+.button {
+  display: inline-block;
+  position: relative;
+  float: right;
+
+}
 
 .post_display {
   position: relative;
   top: 5rem;
   border: 1px solid black;
-  padding: 1rem;
-  margin: 2%;
+  padding: 1%;
+  margin: 1%;
   font-family: 'Open Sans', sans-serif;
   background-color: lightgreen;
 }

@@ -120,17 +120,21 @@
      if (this.state.token) {
        userDisplayElement = (
          <div>
+         <header className="header"> 24/7/365 </header>
            <button id="Log-Out" onClick={this.signOut} >Log-Out!</button>
            <PostForm sendPost={this.sendPost} deletePost={this.deletePost} handlePublish={this.handlePublish} />
            <div id="title_display"> POSTS </div>
            <PostList posts={this.state.posts} deletePost={this.deletePost} handlePublish = {this.handlePublish} />
+           <footer className="footer"> </footer>
          </div>
        );
      } else {
        userDisplayElement = (
-         <div>
+         <div id="User-Container">
+          <header className="header"> 24/7/365  </header>
            <UserForm handleSubmit={this.signUp} buttonText="Sign-Up" />
            <UserForm handleSubmit={this.logIn} buttonText="Log-In" />
+          <footer className="footer"> </footer>
          </div>
        );
      }

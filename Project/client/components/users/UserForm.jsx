@@ -28,23 +28,23 @@ import React from 'react';
      return (
        <div id="UserForm">
          <form onSubmit={this.handleSubmit}>
-           <input
+           <input className ="front-input"
              type="text"
              name="email"
              value={this.state.email}
-             placeholder="email..."
+             placeholder="Email"
              onChange={this.handleInputChange}
            />
-           <input
+           <input className = "front-input"
              type="password"
              name="password"
              value={this.state.password}
-             placeholder="password..."
+             placeholder="Password"
              onChange={this.handleInputChange}
            />
            <input type="submit" value={this.props.buttonText} />
          </form>
-       </div>
+      </div>
      );
    }
  }

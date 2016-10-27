@@ -6,18 +6,27 @@ body {
   background-image: url("https://unsplash.com/photos/He8-FZl-o10")
 }
 
+
 #UserForm {
   position: relative;
-  left: 50%;
-  top: 50%;
-
+  display: inline;
+  left: 500px;
+  top: 200px;
+  margin: 0;
+  padding: 1rem;
 }
+
 
 #fireButton {
   position: relative;
   left: 1rem;
 }
 
+.header {
+  background-color: orange;
+  text-align: center;
+  font-size: 6rem;
+}
 
 #title_display {
   position: relative;
@@ -40,10 +49,10 @@ body {
 
 .post_display {
   position: relative;
-  top: 5rem;
+  top: 2rem;
   border: 1px solid black;
   padding: 1%;
-  margin: 1%;
+  margin: 0;
   font-family: 'Open Sans', sans-serif;
   background-color: lightgreen;
 }

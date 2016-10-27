@@ -27145,7 +27145,7 @@
 	
 	var _PostList2 = _interopRequireDefault(_PostList);
 	
-	var _PostForm = __webpack_require__(246);
+	var _PostForm = __webpack_require__(248);
 	
 	var _PostForm2 = _interopRequireDefault(_PostForm);
 	
@@ -27173,6 +27173,10 @@
 	    _this.signOut = _this.signOut.bind(_this);
 	    _this.sendPost = _this.sendPost.bind(_this);
 	    _this.deletePost = _this.deletePost.bind(_this);
+	    _this.handlePublish = _this.handlePublish.bind(_this);
+	    _this.updatePost = _this.updatePost.bind(_this);
+	    _this.handlePublishPost = _this.handlePublishPost.bind(_this);
+	
 	    return _this;
 	  }
 	
@@ -27191,17 +27195,16 @@
 	
 	      _superagent2.default.get('/api/posts').then(function (response) {
 	        var postData = response.body;
-	        // let posts = [];
-	        // if(postData) {
-	        //   posts = Object.keys(postData).map((id) => {
-	        //     const individualPostData = postData[id];
-	        //     return {
-	        //       id: individualPostData.id,
-	        //       body: individualPostData.body,
-	
-	        //     }
-	        //   })
-	        // }
+	        var posts = [];
+	        if (postData) {
+	          posts = Object.keys(postData).map(function (id) {
+	            var individualPostData = postData[id];
+	            return {
+	              id: individualPostData.id,
+	              body: individualPostData.body
+	            };
+	          });
+	        }
 	        _this2.setState({ posts: posts });
 	      }).catch(function () {
 	        _this2.updateAuth();
@@ -27214,7 +27217,6 @@
 	
 	      var body = _ref.body;
 	
-	      console.log(this.state);
 	      _superagent2.default.post('/api/posts').send({ body: body }).then(function () {
 	        _this3.getCurrentUserPosts();
 	      });
@@ -27229,12 +27231,47 @@
 	      });
 	    }
 	  }, {
-	    key: 'signOut',
-	    value: function signOut() {
+	    key: 'handlePublish',
+	    value: function handlePublish(_ref2) {
+	      var id = _ref2.id;
+	      var content = _ref2.content;
+	
+	      if (id) {
+	        this.updatePost({ id: id, content: content });
+	      } else {
+	        this.handlePublishPost({ content: content });
+	      }
+	    }
+	  }, {
+	    key: 'updatePost',
+	    value: function updatePost(_ref3) {
 	      var _this5 = this;
 	
+	      var id = _ref3.id;
+	      var content = _ref3.content;
+	
+	      _superagent2.default.patch('/api/post/' + id).send({ content: content }).then(function () {
+	        _this5.getCurrentUserPosts();
+	      });
+	    }
+	  }, {
+	    key: 'handlePublishPost',
+	    value: function handlePublishPost(_ref4) {
+	      var _this6 = this;
+	
+	      var content = _ref4.content;
+	
+	      _superagent2.default.post('/api/posts/' + id).send({ content: content }).then(function () {
+	        _this6.getCurrentUserPosts();
+	      });
+	    }
+	  }, {
+	    key: 'signOut',
+	    value: function signOut() {
+	      var _this7 = this;
+	
 	      _superagent2.default.post('/api/signout').then(function () {
-	        return _this5.updateAuth();
+	        return _this7.updateAuth();
 	      });
 	    }
 	  }, {
@@ -27247,22 +27284,22 @@
 	  }, {
 	    key: 'logIn',
 	    value: function logIn(userDetails) {
-	      var _this6 = this;
+	      var _this8 = this;
 	
 	      _superagent2.default.post('/api/login').send(userDetails).then(function () {
-	        _this6.updateAuth();
-	        _this6.getCurrentUserPosts();
+	        _this8.updateAuth();
+	        _this8.getCurrentUserPosts();
 	      });
 	    }
 	  }, {
 	    key: 'signUp',
 	    value: function signUp(userDetails) {
-	      var _this7 = this;
+	      var _this9 = this;
 	
 	      console.log(userDetails);
 	      _superagent2.default.post('/api/signup').send(userDetails).then(function () {
-	        _this7.updateAuth();
-	        _this7.getCurrentUserPosts();
+	        _this9.updateAuth();
+	        _this9.getCurrentUserPosts();
 	      });
 	    }
 	  }, {
@@ -27275,11 +27312,16 @@
 	          null,
 	          _react2.default.createElement(
 	            'button',
-	            { onClick: this.signOut },
+	            { id: 'Log-Out', onClick: this.signOut },
 	            'Log-Out!'
 	          ),
-	          _react2.default.createElement(_PostForm2.default, { sendPost: this.sendPost, deletePost: this.deletePost }),
-	          _react2.default.createElement(_PostList2.default, { posts: this.state.posts, deletePost: this.deletePost })
+	          _react2.default.createElement(_PostForm2.default, { sendPost: this.sendPost, deletePost: this.deletePost, handlePublish: this.handlePublish }),
+	          _react2.default.createElement(
+	            'div',
+	            { id: 'title_display' },
+	            ' POSTS '
+	          ),
+	          _react2.default.createElement(_PostList2.default, { posts: this.state.posts, deletePost: this.deletePost, handlePublish: this.handlePublish })
 	        );
 	      } else {
 	        userDisplayElement = _react2.default.createElement(
@@ -29269,7 +29311,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { id: 'UserForm' },
 	        _react2.default.createElement(
 	          'form',
 	          { onSubmit: this.handleSubmit },
@@ -29316,6 +29358,10 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _PostItem = __webpack_require__(246);
+	
+	var _PostItem2 = _interopRequireDefault(_PostItem);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29340,17 +29386,25 @@
 	  _createClass(PostList, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
+	      var postElements = this.props.posts.map(function (post, idx) {
+	        return _react2.default.createElement(
+	          'div',
+	          { key: idx },
+	          _react2.default.createElement(_PostItem2.default, {
+	            key: idx,
+	            deletePost: _this2.props.deletePost,
+	            handlePublish: _this2.props.handlePublish,
+	            body: post.body,
+	            id: post.id
+	          })
+	        );
+	      });
 	      return _react2.default.createElement(
-	        'div',
+	        'ul',
 	        null,
-	        _react2.default.createElement(
-	          'h2',
-	          null,
-	          ' My posts '
-	        ),
-	        this.props.posts.map(function (post) {
-	          return post.body;
-	        }).join(' & ')
+	        postElements
 	      );
 	    }
 	  }]);
@@ -29379,6 +29433,173 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _Count = __webpack_require__(247);
+	
+	var _Count2 = _interopRequireDefault(_Count);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var PostItem = function (_React$Component) {
+	  _inherits(PostItem, _React$Component);
+	
+	  function PostItem(props) {
+	    _classCallCheck(this, PostItem);
+	
+	    var _this = _possibleConstructorReturn(this, (PostItem.__proto__ || Object.getPrototypeOf(PostItem)).call(this, props));
+	
+	    _this.state = {
+	      localBody: _this.props.body || '',
+	      modalOpen: false
+	    };
+	    _this.handleDeleteClick = _this.handleDeleteClick.bind(_this);
+	    _this.handleEditofContent = _this.handleEditofContent.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(PostItem, [{
+	    key: 'handleDeleteClick',
+	    value: function handleDeleteClick() {
+	      this.props.deletePost(this.props.id);
+	    }
+	  }, {
+	    key: 'handleEditofContent',
+	    value: function handleEditofContent(e) {
+	      var newContent = prompt('Update');
+	      this.props.handlePublish({
+	        id: this.props.id,
+	        body: newContent
+	      });
+	      this.setState({ newContent: newContent });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      // if(this.state.modalOpen) {
+	      //   return (<div> one div </div>);
+	      // } else {
+	      //   return (<a onClick= {this.handleClick}> press me </a> )
+	      // }
+	      // <button className="button" onClick={this.handleEditofContent}> New shit </button>
+	      var body = this.props.body;
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'post_display' },
+	          ' ',
+	          body,
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'button', onClick: this.handleDeleteClick },
+	            ' Delete '
+	          ),
+	          _react2.default.createElement(_Count2.default, null)
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return PostItem;
+	}(_react2.default.Component);
+	
+	exports.default = PostItem;
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Count = function (_React$Component) {
+	  _inherits(Count, _React$Component);
+	
+	  function Count(props) {
+	    _classCallCheck(this, Count);
+	
+	    var _this = _possibleConstructorReturn(this, (Count.__proto__ || Object.getPrototypeOf(Count)).call(this, props));
+	
+	    _this.state = {
+	      count: 0
+	    };
+	    _this.incrementCount = _this.incrementCount.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(Count, [{
+	    key: 'incrementCount',
+	    value: function incrementCount() {
+	      this.setState({
+	        count: this.state.count + 1
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var counter = this.state.count;
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: this.incrementCount },
+	          ' ',
+	          counter,
+	          ' \uD83D\uDD25 '
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Count;
+	}(_react2.default.Component);
+	
+	exports.default = Count;
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _OnAndOff = __webpack_require__(249);
+	
+	var _OnAndOff2 = _interopRequireDefault(_OnAndOff);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29400,11 +29621,12 @@
 	    var _this = _possibleConstructorReturn(this, (PostForm.__proto__ || Object.getPrototypeOf(PostForm)).call(this, props));
 	
 	    _this.state = {
-	      body: ''
+	      body: '',
+	      wordcount: 0
 	    };
 	    _this.handleChange = _this.handleChange.bind(_this);
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
-	    _this.handleDelete = _this.handleDelete.bind(_this);
+	
 	    return _this;
 	  }
 	
@@ -29416,20 +29638,24 @@
 	      var value = target.value;
 	      var updated = {};
 	      updated[name] = value;
+	      var something = updated[name].split(' ').length;
 	      this.setState(updated);
-	      console.log(updated[name]);
+	      this.setState({
+	        wordcount: something
+	      });
+	      console.log(something);
 	    }
 	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(e) {
 	      e.preventDefault();
 	      this.props.sendPost(this.state);
-	      console.log(this.state);
-	    }
-	  }, {
-	    key: 'handleDelete',
-	    value: function handleDelete() {
-	      this.props.deletePost();
+	      this.setState({
+	        body: ''
+	      });
+	      this.setState({
+	        wordcount: 0
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -29439,9 +29665,10 @@
 	        null,
 	        _react2.default.createElement(
 	          'form',
-	          { onSubmit: this.handleSubmit },
-	          _react2.default.createElement('input', {
+	          { id: 'Post-Form', onSubmit: this.handleSubmit },
+	          _react2.default.createElement('textarea', { id: 'textarea',
 	            type: 'text',
+	            placeholder: 'Hello!',
 	            name: 'body',
 	            value: this.state.body,
 	            onChange: this.handleChange
@@ -29451,12 +29678,9 @@
 	        _react2.default.createElement(
 	          'div',
 	          null,
-	          _react2.default.createElement(
-	            'button',
-	            { onClick: this.handleDelete },
-	            ' Delete '
-	          )
-	        )
+	          this.state.wordcount
+	        ),
+	        _react2.default.createElement(_OnAndOff2.default, null)
 	      );
 	    }
 	  }]);
@@ -29468,6 +29692,76 @@
 	
 	
 	PostForm.propTypes = propTypes;
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Toggle = function (_React$Component) {
+	  _inherits(Toggle, _React$Component);
+	
+	  function Toggle(props) {
+	    _classCallCheck(this, Toggle);
+	
+	    var _this = _possibleConstructorReturn(this, (Toggle.__proto__ || Object.getPrototypeOf(Toggle)).call(this, props));
+	
+	    _this.state = {
+	      isToggledOn: true
+	    };
+	    _this.handleClick = _this.handleClick.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(Toggle, [{
+	    key: 'handleClick',
+	    value: function handleClick() {
+	      this.setState(function (prevState) {
+	        return {
+	          isToggledOn: !prevState.isToggledOn };
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'button',
+	          { id: 'fireButton', onClick: this.handleClick },
+	          ' ',
+	          this.state.isToggledOn ? 'ON 🔥' : '💩',
+	          ' '
+	        ),
+	        console.log(this.state.isToggledOn)
+	      );
+	    }
+	  }]);
+	
+	  return Toggle;
+	}(_react2.default.Component);
+	
+	exports.default = Toggle;
 
 /***/ }
 /******/ ]);

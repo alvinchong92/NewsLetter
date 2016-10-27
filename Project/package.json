@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --hot --progress --colors",
     "start": "node server.js"
   },
   "author": "",
@@ -33,5 +34,8 @@
     "webpack-dev-middleware": "^1.8.4",
     "webpack-dev-server": "^1.16.2",
     "webpack-hot-middleware": "^2.13.0"
+  },
+  "devDependencies": {
+    "react-edit-inline": "^1.0.7"
   }
 }

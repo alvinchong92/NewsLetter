@@ -5,6 +5,7 @@
  import PostList from './posts/PostList.jsx';
  import PostForm from './posts/PostForm.jsx';
 
+
  const propTypes = {};
 
  class App extends React.Component {
@@ -15,6 +16,12 @@
      this.signUp = this.signUp.bind(this);
      this.signOut = this.signOut.bind(this);
      this.sendPost = this.sendPost.bind(this);
+     this.deletePost = this.deletePost.bind(this);
+     this.handlePublish = this.handlePublish.bind(this);
+     this.updatePost = this.updatePost.bind(this);
+     this.handlePublishPost = this.handlePublishPost.bind(this);
+
+
    }
    componentDidMount() {
      this.updateAuth();
@@ -25,7 +32,17 @@
    getCurrentUserPosts() {
      request.get('/api/posts')
             .then((response) => {
-              const posts = response.body;
+              const postData = response.body;
+              let posts = [];
+              if(postData) {
+                posts = Object.keys(postData).map((id) => {
+                  const individualPostData = postData[id];
+                  return {
+                    id: individualPostData.id,
+                    body: individualPostData.body,
+                  }
+                })
+              }
               this.setState({ posts });
             })
             .catch(() => {
@@ -33,12 +50,45 @@
             });
    }
    sendPost({ body }) {
-     request.post('/api/post')
+    console.log(this.state)
+     request.post('/api/posts')
            .send({ body })
            .then(() => {
               this.getCurrentUserPosts();
             });
    }
+
+   deletePost(id) {
+    request.del(`/api/posts/${id}`)
+           .then(() => {
+            this.getCurrentUserPosts();
+           })
+   }
+
+   handlePublish({id, content}) {
+    if(id) {
+      this.updatePost({ id, content })
+    } else{
+      this.handlePublishPost({ content })
+    }
+   }
+
+   updatePost({ id, content }) {
+    request.patch(`/api/post/${id}`)
+           .send({ content })
+           .then(() => {
+              this.getCurrentUserPosts();
+           })
+   }
+
+   handlePublishPost({ content }) {
+    request.post(`/api/posts/${id}`)
+           .send({ content })
+           .then(() => {
+            this.getCurrentUserPosts();
+           })
+   }
+
    signOut() {
      request.post('/api/signout')
             .then(() => this.updateAuth());
@@ -70,9 +120,10 @@
      if (this.state.token) {
        userDisplayElement = (
          <div>
-           <button onClick={this.signOut} >Log-Out!</button>
-           <PostForm sendPost={this.sendPosts} />
-           <PostList posts={this.state.posts} />
+           <button id="Log-Out" onClick={this.signOut} >Log-Out!</button>
+           <PostForm sendPost={this.sendPost} deletePost={this.deletePost} handlePublish={this.handlePublish} />
+           <div id="title_display"> POSTS </div>
+           <PostList posts={this.state.posts} deletePost={this.deletePost} handlePublish = {this.handlePublish} />
          </div>
        );
      } else {

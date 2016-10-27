@@ -1,3 +1,50 @@
 body {
   background-color: lightblue;
 }
+
+.image {
+  background-image: url("https://unsplash.com/photos/He8-FZl-o10")
+}
+
+
+#title_display {
+  position: relative;
+  text-align: center;
+  top: 3rem;
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  font-style: bold;
+}
+
+.post_display {
+  position: relative;
+  top: 5rem;
+  border: 1px solid black;
+  padding: 1rem;
+  margin: 2%;
+  font-family: 'Open Sans', sans-serif;
+  background-color: lightgreen;
+}
+
+#Log-Out {
+  float: right;
+}
+
+#Post-Form {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  top: 3rem;
+  left: 28rem;
+  height: 3rem;
+}
+
+textarea {
+  width:24rem;
+  height:6rem;
+
+}
+
+  textarea:focus {
+  background-color: yellow;
+  }

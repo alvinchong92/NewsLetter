@@ -1,4 +1,5 @@
 import React from 'react';
+import Toggle from '../buttons/OnAndOff.jsx';
 
 const propTypes = {
   sendPost: React.PropTypes.func,
@@ -12,6 +13,7 @@ export default class PostForm extends React.Component {
     }
   this.handleChange = this.handleChange.bind(this);
   this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 
   handleChange(e) {
@@ -27,21 +29,23 @@ export default class PostForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.sendPost(this.state)
-    console.log(this.state)
-
   }
+
+
   render() {
     return(
       <div>
-        <form onSubmit= {this.handleSubmit}>
-          <input
+        <form id="Post-Form" onSubmit= {this.handleSubmit}>
+          <textarea id="textarea"
             type="text"
+            placeholder="Hello!"
             name="body"
             value={this.state.body}
             onChange={this.handleChange}
           />
           <input type="submit" value="POST"/>
         </form>
+        <Toggle />
       </div>
     )
   }

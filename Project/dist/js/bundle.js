@@ -27172,6 +27172,7 @@
 	    _this.signUp = _this.signUp.bind(_this);
 	    _this.signOut = _this.signOut.bind(_this);
 	    _this.sendPost = _this.sendPost.bind(_this);
+	    _this.deletePost = _this.deletePost.bind(_this);
 	    return _this;
 	  }
 	
@@ -27189,7 +27190,18 @@
 	      var _this2 = this;
 	
 	      _superagent2.default.get('/api/posts').then(function (response) {
-	        var posts = response.body;
+	        var postData = response.body;
+	        // let posts = [];
+	        // if(postData) {
+	        //   posts = Object.keys(postData).map((id) => {
+	        //     const individualPostData = postData[id];
+	        //     return {
+	        //       id: individualPostData.id,
+	        //       body: individualPostData.body,
+	
+	        //     }
+	        //   })
+	        // }
 	        _this2.setState({ posts: posts });
 	      }).catch(function () {
 	        _this2.updateAuth();
@@ -27202,17 +27214,27 @@
 	
 	      var body = _ref.body;
 	
-	      _superagent2.default.post('/api/post').send({ body: body }).then(function () {
+	      console.log(this.state);
+	      _superagent2.default.post('/api/posts').send({ body: body }).then(function () {
 	        _this3.getCurrentUserPosts();
+	      });
+	    }
+	  }, {
+	    key: 'deletePost',
+	    value: function deletePost(id) {
+	      var _this4 = this;
+	
+	      _superagent2.default.del('/api/posts/' + id).then(function () {
+	        _this4.getCurrentUserPosts();
 	      });
 	    }
 	  }, {
 	    key: 'signOut',
 	    value: function signOut() {
-	      var _this4 = this;
+	      var _this5 = this;
 	
 	      _superagent2.default.post('/api/signout').then(function () {
-	        return _this4.updateAuth();
+	        return _this5.updateAuth();
 	      });
 	    }
 	  }, {
@@ -27225,22 +27247,22 @@
 	  }, {
 	    key: 'logIn',
 	    value: function logIn(userDetails) {
-	      var _this5 = this;
+	      var _this6 = this;
 	
 	      _superagent2.default.post('/api/login').send(userDetails).then(function () {
-	        _this5.updateAuth();
-	        _this5.getCurrentUserPosts();
+	        _this6.updateAuth();
+	        _this6.getCurrentUserPosts();
 	      });
 	    }
 	  }, {
 	    key: 'signUp',
 	    value: function signUp(userDetails) {
-	      var _this6 = this;
+	      var _this7 = this;
 	
 	      console.log(userDetails);
 	      _superagent2.default.post('/api/signup').send(userDetails).then(function () {
-	        _this6.updateAuth();
-	        _this6.getCurrentUserPosts();
+	        _this7.updateAuth();
+	        _this7.getCurrentUserPosts();
 	      });
 	    }
 	  }, {
@@ -27256,8 +27278,8 @@
 	            { onClick: this.signOut },
 	            'Log-Out!'
 	          ),
-	          _react2.default.createElement(_PostForm2.default, { sendPost: this.sendPosts }),
-	          _react2.default.createElement(_PostList2.default, { posts: this.state.posts })
+	          _react2.default.createElement(_PostForm2.default, { sendPost: this.sendPost, deletePost: this.deletePost }),
+	          _react2.default.createElement(_PostList2.default, { posts: this.state.posts, deletePost: this.deletePost })
 	        );
 	      } else {
 	        userDisplayElement = _react2.default.createElement(
@@ -29382,6 +29404,7 @@
 	    };
 	    _this.handleChange = _this.handleChange.bind(_this);
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    _this.handleDelete = _this.handleDelete.bind(_this);
 	    return _this;
 	  }
 	
@@ -29404,6 +29427,11 @@
 	      console.log(this.state);
 	    }
 	  }, {
+	    key: 'handleDelete',
+	    value: function handleDelete() {
+	      this.props.deletePost();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -29419,6 +29447,15 @@
 	            onChange: this.handleChange
 	          }),
 	          _react2.default.createElement('input', { type: 'submit', value: 'POST' })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: this.handleDelete },
+	            ' Delete '
+	          )
 	        )
 	      );
 	    }
